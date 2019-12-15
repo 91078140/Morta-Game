@@ -15,8 +15,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 	SpriteBatch batch;
 	Texture morta, morter, grid, sand, white;
 	private int[] drop = new int[5];
-	private int x1 = 165, y1 = 100, xm = 173, ym = 700;
-	private double count = 0;
+	private int[] dropy = new int[5];
+	private int x1 = 165, y1 = 100, xm = 173, ym = 600, ym1;
+	private double count = 1;
 	private Rectangle bombBounds, mortaBounds;
 
 
@@ -30,35 +31,96 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 		grid = new Texture("grid.png");
 		sand = new Texture("sand.jpg");
 		white = new Texture("white.jpeg");
+
 		for(int i = 0; i < drop.length; i++)
 		{
 			drop[i] = 173 + (72 * i);
 		}
+		for(int i = 0; i < dropy.length; i++)
+		{
+			dropy[i] = ym;
+		}
+
+
 	}
 
 	@Override
 	public void render () {
 
 		//checks for a collision between morta and the bombs
-		if(drop[0] >= x1 - 20 && drop[0] <= x1 + 20 && ym >= y1 - 20 && ym <= y1 + 20 ||
-				drop[1] >= x1 - 20 && drop[1] <= x1 + 20 && ym >= y1 - 20 && ym <= y1 + 20 ||
-				drop[2] >= x1 - 20 && drop[2] <= x1 + 20 && ym >= y1 - 20 && ym <= y1 + 20 ||
-				drop[3] >= x1 - 20 && drop[3] <= x1 + 20 && ym >= y1 - 20 && ym <= y1 + 20 ||
-				drop[4] >= x1 - 20 && drop[4] <= x1 + 20 && ym >= y1 - 20 && ym <= y1 + 20)
+		if(drop[0] >= x1 - 25 && drop[0] <= x1 + 25 && dropy[0] >= y1 - 25 && dropy[0] <= y1 + 25 ||
+				drop[1] >= x1 - 25 && drop[1] <= x1 + 25 && dropy[1] >= y1 - 25 && dropy[1] <= y1 + 25 ||
+				drop[2] >= x1 - 25 && drop[2] <= x1 + 25 && dropy[2] >= y1 - 25 && dropy[2] <= y1 + 25 ||
+				drop[3] >= x1 - 25 && drop[3] <= x1 + 25 && dropy[3] >= y1 - 25 && dropy[3] <= y1 + 25 ||
+				drop[4] >= x1 - 25 && drop[4] <= x1 + 25 && dropy[4] >= y1 - 25 && dropy[4] <= y1 + 25)
 		{
 				x1 = 165;
 				y1 = 100;
 				xm = 173;
-				ym = 700;
-				count = 0;
-		}
-			ym -= 3; // drops the bomb
-		//count += .01; time survived
-		System.out.println(count);
-			if(ym < 0)
+			for(int i = 0; i < dropy.length; i++)
 			{
-				ym = 700;
+				dropy[i] = ym;
+			}
+				count = 1;
+		}
+		dropy[0] -= 2 * count;
+		dropy[1] -= 2 * count;
+		dropy[2] -= 2 * count;
+		dropy[3] -= 2 * count;
+		dropy[4] -= 2 * count;// drops the bomb
+		//count += .01; time survived
+		//System.out.println(count);
+
+			if(dropy[0] < 0)
+			{
+				ym1 = 0;
+					while(ym1 < 500)
+					{
+						ym1 += (int) (Math.random() * 100);
+					}
+					dropy[0] = ym + ym1;
+				count += .05;
 			}// end of if that resets the bombs to the top
+		if(dropy[1] < 0)
+		{
+			ym1 = 0;
+			while(ym1 < 500)
+			{
+				ym1 += (int) (Math.random() * 100);
+			}
+			dropy[1] = ym + ym1;
+			count += .05;
+		}// end of if that resets the bombs to the top
+		if(dropy[2] < 0)
+		{
+			ym1 = 0;
+			while(ym1 < 500)
+			{
+				ym1 += (int) (Math.random() * 100);
+			}
+			dropy[2] = ym + ym1;
+			count += .05;
+		}// end of if that resets the bombs to the top
+		if(dropy[3] < 0)
+		{
+			ym1 = 0;
+			while(ym1 < 500)
+			{
+				ym1 += (int) (Math.random() * 100);
+			}
+			dropy[3] = ym + ym1;
+			count += .05;
+		}// end of if that resets the bombs to the top
+		if(dropy[4] < 0)
+		{
+			ym1 = 0;
+			while(ym1 < 500)
+			{
+				ym1 += (int) (Math.random() * 100);
+			}
+			dropy[4] = ym + ym1;
+			count += .05;
+		}// end of if that resets the bombs to the top
 		// detects the arrow keys and moves the character
 			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
 				if (x1 > 165) {
@@ -89,11 +151,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor
 			batch.draw(grid, 20, 45, 600, 400);
 			batch.draw(white, 240, 180, 60, 60);
 			batch.draw(morta, x1, y1, 60, 60);
-			batch.draw(morter, drop[0], ym, 60, 60);// 1
-			batch.draw(morter, drop[1], ym, 60, 60);// 1
-			batch.draw(morter, drop[2], ym, 60, 60);// 1
-			batch.draw(morter, drop[3], ym, 60, 60);// 1
-			batch.draw(morter, drop[4], ym, 60, 60);// 1
+			batch.draw(morter, drop[0], dropy[0], 60, 60);// 1
+			batch.draw(morter, drop[1], dropy[1], 60, 60);// 2
+			batch.draw(morter, drop[2], dropy[2], 60, 60);// 3
+			batch.draw(morter, drop[3], dropy[3], 60, 60);// 4
+			batch.draw(morter, drop[4], dropy[4], 60, 60);// 5
 			batch.end();
 
 	}
